@@ -8,7 +8,15 @@ require('dotenv').config()
 
 const server = express()
 server.use(express.json())
-server.use(cors())
+// server.use(cors())
+server.use(cors({
+    origin: (origin, callback) => {
+        console.log("Request from origin:", origin);
+        callback(null, true); // allow all origins
+    },
+    credentials: true
+}));
+
 
 mongoose.connect(process.env.MONGO_URI).then(()=>{
     console.log("MongoDB connected ✅");
