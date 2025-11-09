@@ -5,7 +5,7 @@ async function filterFolder(req, res) {
         const {university, year, semester, faculty, subject} = req.body
         if(!university || !year || !semester || !faculty || !subject) return res.status(400).send("Missing fields")
         
-        let notes = await Note.find()
+        let notes = await Note.find().lean()
 
         if(notes.length > 0){
             let notesArray = notes.map((note) => note.fileUrl)
@@ -28,7 +28,7 @@ async function getNotesByPrefix(req, res) {
         
         let notes = await Note.find({
             fileUrl: {$regex: `^${prefix}`, $options: 'i'}
-        })
+        }).lean()
 
         if(notes.length <= 0){
             return res.status(404).send("No Notes found")
